@@ -2,23 +2,22 @@ package test;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-
 import dao.Administration;
-import dao.CollegeDetails;
+import dao.StudentDetails;
 
 public class CollegeManagement {
 
 	public static void main(String[] args) throws SQLException {
 		
 		Administration am=new Administration();
-		CollegeDetails cd = new CollegeDetails();
+		StudentDetails cd = new StudentDetails();
 	
 		String press;
 		String pattern="[0-2]{1}";
 		
 		System.out.println("   -----ABC College-----   \n");
-		System.out.println("1.Do you want AdminManagement\n"
-				+ "2.Do you want CollegeDetails\n"
+		System.out.println("1.Are you  Admin\n"
+				+ "2.Are you  Student\n"
 				+"\npress '1' or '2'");
 		Scanner sc=new Scanner(System.in);
 		press=sc.next();

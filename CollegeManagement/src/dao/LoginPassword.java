@@ -2,16 +2,18 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
-
-import model.Pojo;
+import model.ManagementSetting;
 import util.DatabaseConnection;
 
 public class LoginPassword {
 
-	public static void login() throws SQLException {
-		Pojo pj=new Pojo();
+//	------------------Student login----------------
+
+	public static void studentLogin() throws SQLException {
+		ManagementSetting pj = new ManagementSetting();
 		Scanner sc = new Scanner(System.in);
 		String userName1;
 		String password1;
@@ -20,7 +22,7 @@ public class LoginPassword {
 
 		Connection connection1 = DatabaseConnection.connectionDrive();
 
-		System.out.println("\n   -----SIGNIN-----\n");
+		System.out.println("\n   -----LOGIN-----\n");
 		System.out.println("enter your UserName :");
 		userName1 = sc.next();
 		while (!userName1.matches(pattern)) {
@@ -35,172 +37,131 @@ public class LoginPassword {
 			System.out.println("enter your Password again:");
 			password1 = sc.next();
 		}
-		
-		pj.setName(userName1);
+
+		pj.setFirstName(userName1);
 		pj.setPassword(password1);
-		
-		String query = "insert into logintable values(?,?)";
+
+		String query = "Select FirstName,Password from signup where FirstName=? and Password=? ";
 		PreparedStatement prepare = connection1.prepareStatement(query);
-		prepare.setString(1, userName1);
-		prepare.setString(2, password1);
-		int rows = prepare.executeUpdate();
-		System.out.println("Rows Affected : " + rows);
-	}
-	
-	
-//	------------------Student Attendence----------------
-	
-	public void attendence() {
-		Scanner sc = new Scanner(System.in);
+		prepare.setString(1, pj.getFirstName());
+		prepare.setString(2, pj.getPassword());
+		ResultSet rs = prepare.executeQuery();
 
-		String year;
-		String department;
-		String pattern = "[1-4]";
-		System.out.println("Enter Your Year  ('1' or '2' or '3' or '4')");
-		year = sc.next();
-		while (!year.matches(pattern)) {
-			System.out.println("enter your Year again ('1' or '2' or '3' or '4')");
-			year = sc.next();
+		if (rs.next()) {
+			System.out.println("");
+		} else {
+			System.err.println("invalid 'UserName' or 'Password'");
+			studentLogin();
 		}
-		System.out.println("Enter Your Deparment ('CSE' or 'IT' or 'ECE')");
-		department = sc.next().toLowerCase();
-		while (!department.matches("cse") && !department.matches("it") && !department.matches("ece")) {
-			System.out.println("enter your Deparment again:");
-			department = sc.next().toLowerCase();
-		}
-		if (department.equals("cse")) {
-		Scanner se = new Scanner(System.in);
-		String name;
-		System.out.println("\n   -----Computer Science Students Details-----\n");
-		System.out.println("1.Saravana\n2.Naveen\n3.Akash");
-		System.out.println("\nenter your Name :");
-		name = se.next().toLowerCase();
-		while (!name.equals("saravana")&&!name.equals("naveen")&&!name.equals("akash")) {
-			System.err.println("Incorrect Name:");
-			System.out.println("\nenter your Name again :");
-			name = se.next().toLowerCase();
-		}
-		if(name.equals("saravana")) {
-			System.out.println("\nName     : Saravana\n"
-					         + "Year       : 4-year\n"
-					         + "Department : Computer Science\n"
-					         + "attendence : 95%");
-		}
-		if(name.equals("naveen")) {
-			System.out.println("\nName     : Naveen\n"
-					         + "Year       : 4-year\n"
-					         + "Department : Computer Science\n"
-					         + "attendence : 92%");
-		}
-		if(name.equals("akash")) {
-			System.out.println("\nName     : Akash\n"
-					         + "Year       : 4-year\n"
-					         + "Department : Computer Science\n"
-					         + "attendence : 98%");
-		}
+
 	}
-		
-		if (department.equals("it")) {
-			Scanner se = new Scanner(System.in);
-			String name;
-			System.out.println("\n   -----Information Technology Students Details-----\n");
-			System.out.println("1.Saravana\n2.Naveen\n3.Akash");
-			System.out.println("\nenter your Name :");
-			name = se.next().toLowerCase();
-			while (!name.equals("saravana")&&!name.equals("naveen")&&!name.equals("akash")) {
-				System.err.println("Incorrect Name:");
-				System.out.println("\nenter your Name again :");
-				name = se.next().toLowerCase();
-			}
-			if(name.equals("saravana")) {
-				System.out.println("\nName     : Saravana\n"
-						         + "Year       : 4-year\n"
-						         + "Department : Computer Science\n"
-						         + "attendence : 95%");
-			}
-			if(name.equals("naveen")) {
-				System.out.println("\nName     : Naveen\n"
-						         + "Year       : 4-year\n"
-						         + "Department : Computer Science\n"
-						         + "attendence : 92%");
-			}
-			if(name.equals("akash")) {
-				System.out.println("\nName     : Akash\n"
-						         + "Year       : 4-year\n"
-						         + "Department : Computer Science\n"
-						         + "attendence : 98%");
-			}
+
+//	------------------Admin login----------------
+
+	public static void adminLogin() throws SQLException {
+		ManagementSetting pj = new ManagementSetting();
+		Scanner sc = new Scanner(System.in);
+		String userName2;
+		String password2;
+		String pattern = "[a-zA-Z0-9]{1,12}";
+		String pattern2 = "[a-zA-Z0-9]{1,12}";
+
+		Connection connection2 = DatabaseConnection.connectionDrive();
+
+		System.out.println("\n   -----LOGIN-----\n");
+		System.out.println("enter your UserName :");
+		userName2 = sc.next();
+		while (!userName2.matches(pattern)) {
+			System.err.println("Incorrect UserName");
+			System.out.println("enter your UserName again:");
+			userName2 = sc.next();
 		}
-		
-		if (department.equals("ece")) {
-			Scanner se = new Scanner(System.in);
-			String name;
-			System.out.println("\n   -----Electrical & Communication  Students Details-----\n");
-			System.out.println("1.Saravana\n2.Naveen\n3.Akash");
-			System.out.println("\nenter your Name :");
-			name = se.next().toLowerCase();
-			while (!name.equals("saravana")&&!name.equals("naveen")&&!name.equals("akash")) {
-				System.err.println("Incorrect Name:");
-				System.out.println("\nenter your Name again :");
-				name = se.next().toLowerCase();
-			}
-			if(name.equals("saravana")) {
-				System.out.println("\nName     : Saravana\n"
-						         + "Year       : 4-year\n"
-						         + "Department : Computer Science\n"
-						         + "attendence : 95%");
-			}
-			if(name.equals("naveen")) {
-				System.out.println("\nName     : Naveen\n"
-						         + "Year       : 4-year\n"
-						         + "Department : Computer Science\n"
-						         + "attendence : 92%");
-			}
-			if(name.equals("akash")) {
-				System.out.println("\nName     : Akash\n"
-						         + "Year       : 4-year\n"
-						         + "Department : Computer Science\n"
-						         + "attendence : 98%");
-			}
+		System.out.println("enter your Password :");
+		password2 = sc.next();
+		while (!password2.matches(pattern2)) {
+			System.err.println("Incorrect Password");
+			System.out.println("enter your Password again:");
+			password2 = sc.next();
 		}
+
+		pj.setUserName(userName2);
+		pj.setPassword1(password2);
+
+		String query = "Select UserName,Password1 from AdminSignup where UserName=? and Password1=? ";
+		PreparedStatement prepare = connection2.prepareStatement(query);
+		prepare.setString(1, pj.getUserName());
+		prepare.setString(2, pj.getPassword1());
+		ResultSet rs = prepare.executeQuery();
+
+		if (rs.next()) {
+			System.out.println("");
+		} else {
+			System.err.println("invalid 'UserName' or 'Password'");
+			adminLogin();
+		}
+
 	}
+
+
+
+//	------------------Student Attendance----------------
+
+	public static void attendenceManagement() throws SQLException {
+		ManagementSetting pj = new ManagementSetting();
+		Scanner sc = new Scanner(System.in);
+		Connection connection = DatabaseConnection.connectionDrive();
+		String studentName;
+		String pattern = "[a-zA-Z0-9]{1,12}";
+		System.out.println("enter your StudentName :");
+		studentName = sc.next();
+		while (!studentName.matches(pattern)) {
+			System.err.println("Incorrect StudentName");
+			System.out.println("enter your StudentName again:");
+			studentName = sc.next();
+		}
+		pj.setStudentName(studentName);
+		
+		String query1 = "Select FirstName from signup where FirstName=? ";
+		PreparedStatement prepare = connection.prepareStatement(query1);
 	
+		prepare.setString(1, pj.getStudentName());
+		ResultSet rs = prepare.executeQuery();
+		
+		if (rs.next()) {
+			
+			System.out.println("");
+		} else {
+			System.err.println("StudentName is not available");
+		}
+
+   int[] marks=new int[5];
+   System.out.println("enter the marks");
+   for( int i=0;i<marks.length;i++){
+	   marks[i]=sc.nextInt();
+   }
+
+   pj.setMark1( marks[0]);
+   pj.setMark2( marks[1]);
+   pj.setMark3( marks[2]);
+   pj.setMark4( marks[3]);
+   pj.setMark5( marks[4]);
+   String query = "insert into Marks(Student_Names,English,Tamil,Maths,Social_science,Science) values(?,?,?,?,?,?) ";
+	PreparedStatement prepare1 = connection.prepareStatement(query);
+	System.out.println(studentName);
+	prepare1.setString(1,studentName);
+	prepare1.setLong(2, pj.getMark1());
+	prepare1.setLong(3, pj.getMark2());
+	prepare1.setLong(4, pj.getMark3());
+	prepare1.setLong(5, pj.getMark4());
+	prepare1.setLong(6, pj.getMark5());
+//	System.out.println(names);
+	int rows = prepare1.executeUpdate();
+	
+	}
+
 //	------------------------------Student Marks-----------------------------
-	
+
 	public void marks() {
-		
-		Scanner sc = new Scanner(System.in);
-		String name;
-		System.out.println("\n   -----Computer Science Students Details-----\n");
-		System.out.println("1.Saravana\n2.Naveen\n3.Akash");
-		System.out.println("\nenter your Name :");
-		name = sc.next().toLowerCase();
-		while (!name.equals("saravana")&&!name.equals("naveen")&&!name.equals("akash")) {
-			System.out.println("Incorrect Name:");
-			System.out.println("\nenter your Name again :");
-			name = sc.next().toLowerCase();
-		}
-		if(name.equals("saravana")) {
-			System.out.println("\nName     : Saravana\n"
-					         + "Year       : 4-year\n"
-					         + "Department : Computer Science\n"
-					         + "mark       : 495/500");
-		}
-		if(name.equals("naveen")) {
-			System.out.println("\nName     : Naveen\n"
-					         + "Year       : 4-year\n"
-					         + "Department : Computer Science\n"
-					         + "mark       : 492/500");
-		}
-		if(name.equals("akash")) {
-			System.out.println("\nName     : Akash\n"
-					         + "Year       : 4-year\n"
-					         + "Department : Computer Science\n"
-					         + "mark       : 455/500");
-		}
-	
 	}
 
-
-	
-	}
+}
