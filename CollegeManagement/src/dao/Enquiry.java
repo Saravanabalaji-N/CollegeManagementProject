@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.ResultSetMetaData;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,18 +15,19 @@ public class Enquiry {
 
 //	--------------Student Signup-----------------------
 
-
 	public static void studentSignupDetails() throws SQLException {
 		String firstName;
 		String lastName;
 		String dob;
 		String id;
+		String aadharId;
 		String location;
 		String password;
 		String pattern = "[a-zA-z]+";
 		String pattern2 = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 		String pattern3 = "[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}";
 		String pattern4 = "[a-zA-z0-9]+";
+		String pattern5 = "[a-zA-Z]{4}[0-9]{4}";
 
 		Scanner sc = new Scanner(System.in);
 		Connection connection2 = DatabaseConnection.connectionDrive();
@@ -44,6 +46,20 @@ public class Enquiry {
 			lastName = sc.next();
 		}
 
+		System.out.println("enter your ID :");
+		id = sc.next();
+		while (!id.matches(pattern5)) {
+			System.out.println("enter your ID again:");
+			id = sc.next();
+		}
+
+		System.out.println("enter your User Password :");
+		password = sc.next();
+		while (!password.matches(pattern4)) {
+			System.out.println("enter your User Password again:");
+			password = sc.next();
+		}
+
 		System.out.println("enter your dob :");
 		System.out.println("YYYY-MM-DD    :");
 		dob = sc.next();
@@ -55,11 +71,11 @@ public class Enquiry {
 
 		System.out.println("enter your AadharId :");
 		System.out.println("aaaa-bbbb-cccc-dddd :");
-		id = sc.next();
-		while (!id.matches(pattern3)) {
+		aadharId = sc.next();
+		while (!aadharId.matches(pattern3)) {
 			System.out.println("enter your AadharId again:");
 			System.out.println("aaaa-bbbb-cccc-dddd      :");
-			id = sc.next();
+			aadharId = sc.next();
 		}
 
 		System.out.println("enter your Location :");
@@ -69,37 +85,34 @@ public class Enquiry {
 			location = sc.next();
 		}
 
-		System.out.println("enter your Password :");
-		password = sc.next();
-		while (!password.matches(pattern4)) {
-			System.out.println("enter your Password again:");
-			password = sc.next();
-		}
-
 		ManagementSetting pj = new ManagementSetting();
 		pj.setFirstName(firstName);
 		pj.setLastName(lastName);
-		pj.setDob(dob);
 		pj.setId(id);
-		pj.setLocation(location);
 		pj.setPassword(password);
+		pj.setDob(dob);
+		pj.setAadharid(aadharId);
+		pj.setLocation(location);
 
-		String query = "insert into signup values(?,?,?,?,?,?)";
+		String query = "insert into signup values(?,?,?,?,?,?,?)";
 		PreparedStatement prepare = connection2.prepareStatement(query);
 		prepare.setString(1, firstName);
 		prepare.setString(2, lastName);
-		prepare.setString(3, dob);
-		prepare.setString(4, id);
-		prepare.setString(5, location);
-		prepare.setString(6, password);
+		prepare.setString(3, id);
+		prepare.setString(4, password);
+		prepare.setString(5, dob);
+		prepare.setString(6, aadharId);
+		prepare.setString(7, location);
+
 		int rows = prepare.executeUpdate();
 		System.out.println("Rows Affected : " + rows);
 
 		System.out.println("\n----------------------------");
 		System.out.println("FirstName :" + firstName);
 		System.out.println("Lastname  :" + lastName);
+		System.out.println("UserId  :" + id);
 		System.out.println("DOB       :" + dob);
-		System.out.println("AadharId  :" + id);
+		System.out.println("AadharId  :" + aadharId);
 		System.out.println("Location  :" + location);
 		System.out.println("------------------------------");
 		System.out.println("Your Sinup Completed");
@@ -108,10 +121,9 @@ public class Enquiry {
 //		recordChoose();
 
 	}
-	
+
 //	--------------Admin Signup-----------------------
 
-	
 	public static void adminSignupDetails() throws SQLException {
 		String userName;
 		String mailId;
@@ -121,7 +133,7 @@ public class Enquiry {
 		String pattern = "[a-zA-z]+";
 		String pattern2 = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])(?=.*\\d).{8,}$";
 		String pattern3 = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-		String pattern4 = "[a-zA-z0-9]+";
+		String pattern4 = " ^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]){8}$";
 
 		Scanner sc = new Scanner(System.in);
 		Connection connection2 = DatabaseConnection.connectionDrive();
@@ -142,7 +154,7 @@ public class Enquiry {
 
 		System.out.println("enter your dob :");
 		System.out.println("YYYY-MM-DD    :");
-		dob1= sc.next();
+		dob1 = sc.next();
 		while (!dob1.matches(pattern3)) {
 			System.out.println("enter your DOB again:");
 			System.out.println("DD-MM-YYYY          :");
@@ -191,12 +203,10 @@ public class Enquiry {
 		LoginPassword.adminLogin();
 
 	}
-	
-	
 
 //	--------------details of adminManagement-----------------------
 
-	public static void availability() throws SQLException {
+	public static void adminDetailsChoose() throws SQLException {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("-----------------------------");
@@ -204,8 +214,8 @@ public class Enquiry {
 		System.out.println("-----------------------------\n");
 
 		System.out.println("   -----AdminManagement------\n");
-		System.out.println("1.MarksUpdate (press '1')\n" + "2.Marks Details (press '2')\n"
-				+ "3.feesPayment (press 't' or 'T')\n");
+		System.out.println(
+				"1.MarksUpdate (press '1')\n" + "2.Marks Details (press '2')\n" + "3.feesPayment (press 't' or 'T')\n");
 		System.out.println("enter the valid input:");
 
 		String keyWord = sc.next().toLowerCase();
@@ -214,20 +224,19 @@ public class Enquiry {
 			keyWord = sc.next();
 		}
 		if (keyWord.equals("1")) {
-	
-			LoginPassword.attendenceManagement();
+
+			LoginPassword.marks();
 			// hostel method is below this page
 		}
 		if (keyWord.equals("2")) {
 //			transport();
 			// transport method is below this page
 		}
-	
-	
-	}
-//	---------------Record choose(Attendance & Marks)---------------
 
-	public static void recordChoose() throws SQLException {
+	}
+//	---------------Admin Record choose(Attendance & Marks)---------------
+
+	public static void sudentRecordChoose(ManagementSetting pj) throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		LoginPassword lg = new LoginPassword();
 		String record;
@@ -235,7 +244,7 @@ public class Enquiry {
 		System.out.println("You Are Sucessfully LoggedIn");
 		System.out.println("------------------------------");
 
-		System.out.println("\nwhich record you need\n1.attendence\n2.marks");
+		System.out.println("\nwhich record you need\n1.Marks\n2.Attendance");
 		System.out.println("Enter the Vaild input :");
 		record = sc.next().toLowerCase();
 		while (!record.matches("1") && !record.matches("2")) {
@@ -243,49 +252,41 @@ public class Enquiry {
 			record = sc.next();
 		}
 		if (record.equals("1")) {
-			LoginPassword.attendenceManagement();
+			studentMarkView(pj);
 		}
 
 		if (record.equals("2")) {
-			lg.marks();
+//			lg.marks();
 		}
 	}
 
-//	public static void marksUpdate() throws SQLException {
-//		
-//		Scanner sc = new Scanner(System.in);
-//		ManagementSetting pj = new ManagementSetting();
-//		Connection connection = DatabaseConnection.connectionDrive();
-//		String studentName;
-//		String pattern = "[a-zA-Z0-9]{1,12}";
-//		System.out.println("enter your StudentName :");
-//		studentName = sc.next();
-//		while (!studentName.matches(pattern)) {
-//			System.err.println("Incorrect StudentName");
-//			System.out.println("enter your StudentName again:");
-//			studentName = sc.next();
-//		}
-//		
-//		pj.setStudentName(studentName);
-//		
-//		String query = "Select FirstName from signup where FirstName=? ";
-////		String query1 = "insert into Marks(Student_Names) values(?)";
-//		PreparedStatement prepare = connection.prepareStatement(query);
-////		PreparedStatement prepare1 = connection.prepareStatement(query1);
-//		prepare.setString(1, pj.getStudentName());
-//
-//		ResultSet rs = prepare.executeQuery();
-////		int rows = prepare1.executeUpdate();
-//		if (rs.next()) {
-//			System.out.println("");
-//		} else {
-//			System.err.println("StudentName is not available");
-//			marksUpdate();
-//		}
-////		LoginPassword.attendenceManagement();
-//	}
+//	---------------Student Record choose(Attendance & Marks)---------------
 
-	public void feesPayment() {
+	public static void studentMarkView(ManagementSetting pj) throws SQLException {
+		Connection connection = DatabaseConnection.connectionDrive();
 
+		Scanner sc = new Scanner(System.in);
+		String myName;
+		myName = ManagementSetting.getId();
+		String query = "Select English,Tamil,Maths,Social_science,Science from marks where Student_id=? ";
+		PreparedStatement prepare = connection.prepareStatement(query);
+		prepare.setString(1, myName);
+		ResultSet rs = prepare.executeQuery();
+		ResultSetMetaData rm = rs.getMetaData();
+		int columnCount = rm.getColumnCount();
+		if (rs.next()) {
+			for (int i = 1; i <= columnCount; i += 1) {
+				System.out.print(rm.getColumnName(i) + "\t\t");
+			}
+			System.out.println();
+			for (int i = 1; i <= columnCount; i += 1) {
+				System.out.print(rs.getString(i) + "\t\t");
+			}
+			System.out.println();
+		}
+			else {
+			System.err.println("No data updated...");
+			}
+		
 	}
 }

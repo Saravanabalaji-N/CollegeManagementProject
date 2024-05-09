@@ -3,9 +3,11 @@ package dao;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import model.ManagementSetting;
+
 public class StudentDetails {
 
-	public void studentDetails() throws SQLException {
+	public  void studentDetails(ManagementSetting pj) throws SQLException {
 
 		String student;
 		Scanner sc = new Scanner(System.in);
@@ -19,7 +21,7 @@ public class StudentDetails {
 		}
 		if (student.equals("old")) {
 			LoginPassword.studentLogin();
-			Enquiry.recordChoose();
+			Enquiry.sudentRecordChoose(pj);
 		}
 
 		if (student.equals("new")) {

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import dao.Administration;
 import dao.StudentDetails;
+import model.ManagementSetting;
 
 public class CollegeManagement {
 
@@ -11,7 +12,7 @@ public class CollegeManagement {
 		
 		Administration am=new Administration();
 		StudentDetails cd = new StudentDetails();
-	
+		ManagementSetting pj=new ManagementSetting();
 		String press;
 		String pattern="[0-2]{1}";
 		
@@ -30,7 +31,7 @@ public class CollegeManagement {
 			am.adminManagement();
 		}
 		if(press.equals("2")) {
-			cd.studentDetails();
+			cd.studentDetails(pj);
 		}
 		
 		

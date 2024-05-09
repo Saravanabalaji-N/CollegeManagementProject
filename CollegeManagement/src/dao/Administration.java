@@ -25,13 +25,12 @@ public class Administration implements Documents {
 		}
 		if (admin.equals("old")) {
 			LoginPassword.adminLogin();
-			Enquiry.availability();
+			Enquiry.adminDetailsChoose();
 		}
 
 		if (admin.equals("new")) {
 			Enquiry.adminSignupDetails();
-
-			Enquiry.availability();
+			Enquiry.adminDetailsChoose();
 
 		}
 

@@ -4,13 +4,22 @@ public class ManagementSetting {
 
 	String firstName;
 	String lastName;
+    static String id;
 	String dob;
-	String id;
+	String aadharid;
 	String location;
 	String password;
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getAadharid() {
+		return aadharid;
+	}
+
+	public void setAadharid(String aadharid) {
+		this.aadharid = aadharid;
 	}
 
 	public void setPassword(String password1) {
@@ -41,7 +50,7 @@ public class ManagementSetting {
 		this.dob = dob;
 	}
 
-	public String getId() {
+	public static  String getId() {
 		return id;
 	}
 
@@ -159,8 +168,8 @@ public class ManagementSetting {
 		this.mark5 = mark5;
 	}
 
+	
 	String StudentName1;
-	public String setStudentName1;
 
 	public String getStudentName1() {
 		return StudentName1;
