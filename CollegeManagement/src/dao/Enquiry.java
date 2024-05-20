@@ -215,22 +215,27 @@ public class Enquiry {
 
 		System.out.println("   -----AdminManagement------\n");
 		System.out.println(
-				"1.MarksUpdate (press '1')\n" + "2.Marks Details (press '2')\n" + "3.feesPayment (press 't' or 'T')\n");
+				"1.MarksUpdate (press '1')\n" + "2.Marks Details (press '2')\n" + "3.Quit (press '3')\n");
 		System.out.println("enter the valid input:");
 
 		String keyWord = sc.next().toLowerCase();
-		while (!keyWord.matches("1") && !keyWord.matches("2")) {
+		while (!keyWord.matches("1") && !keyWord.matches("2") && !keyWord.matches("3")) {
 			System.out.println("enter the valid input:");
 			keyWord = sc.next();
 		}
 		if (keyWord.equals("1")) {
 
 			LoginPassword.marks();
+			adminDetailsChoose();
 			// hostel method is below this page
 		}
 		if (keyWord.equals("2")) {
-//			transport();
+			LoginPassword.atteneance();
+			adminDetailsChoose();
 			// transport method is below this page
+		}
+		if (keyWord.equals("3")) {
+			System.out.println("Thanks for visit");
 		}
 
 	}
@@ -252,17 +257,17 @@ public class Enquiry {
 			record = sc.next();
 		}
 		if (record.equals("1")) {
-			studentMarkView(pj);
+			studentMarkView();
 		}
 
 		if (record.equals("2")) {
-//			lg.marks();
+			studenAttendanceView();
 		}
 	}
 
 //	---------------Student Record choose(Attendance & Marks)---------------
 
-	public static void studentMarkView(ManagementSetting pj) throws SQLException {
+	public static void studentMarkView( ) throws SQLException {
 		Connection connection = DatabaseConnection.connectionDrive();
 
 		Scanner sc = new Scanner(System.in);
@@ -287,6 +292,33 @@ public class Enquiry {
 			else {
 			System.err.println("No data updated...");
 			}
-		
+	}
+	
+//	---------------------
+	public static void studenAttendanceView( ) throws SQLException {
+		Connection connection = DatabaseConnection.connectionDrive();
+
+		Scanner sc = new Scanner(System.in);
+		String myName;
+		myName = ManagementSetting.getId();
+		String query = "Select Attendance_Percentage from marks where Student_id=? ";
+		PreparedStatement prepare = connection.prepareStatement(query);
+		prepare.setString(1, myName);
+		ResultSet rs = prepare.executeQuery();
+		ResultSetMetaData rm = rs.getMetaData();
+		int columnCount = rm.getColumnCount();
+		if (rs.next()) {
+			for (int i = 1; i <= columnCount; i += 1) {
+				System.out.print(rm.getColumnName(i) + "\t\t");
+			}
+			System.out.println();
+			for (int i = 1; i <= columnCount; i += 1) {
+				System.out.print(rs.getString(i) + "\t\t");
+			}
+			System.out.println();
+		}
+			else {
+			System.err.println("No data updated...");
+			}
 	}
 }

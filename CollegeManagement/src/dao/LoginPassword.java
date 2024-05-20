@@ -164,4 +164,58 @@ public class LoginPassword {
 		}
 
 	}
+//	--------------------
+
+	public static void atteneance() throws SQLException {
+		Scanner sc = new Scanner(System.in);
+		ManagementSetting pj = new ManagementSetting();
+		Connection connection = DatabaseConnection.connectionDrive();
+		String userId;
+		String studentName;
+		String pattern = "[a-zA-Z0-9]{1,12}";
+		System.out.println("enter the StudentName to update:");
+		studentName = sc.next();
+		while (!studentName.matches(pattern)) {
+			System.err.println("Incorrect StudentName");
+			System.out.println("enter the StudentName to update again:");
+			studentName = sc.next();
+		}
+		System.out.println("enter the userId :");
+		userId = sc.next();
+		while (!userId.matches(pattern)) {
+			System.err.println("Incorrect userId");
+			System.out.println("enter the userId again :");
+			userId = sc.next();
+		}
+		pj.setStudentName(studentName);
+		pj.setId(userId);
+		String query = "Select FirstName from signup where FirstName=? and Id=? ";
+		PreparedStatement prepare = connection.prepareStatement(query);
+		prepare.setString(1, pj.getStudentName());
+		prepare.setString(2, pj.getId());
+		ResultSet rs = prepare.executeQuery();
+		if (rs.next()) {
+			String percentage;
+			String pattern1 = "[0-9]{1,100}";
+			System.out.println("enter the Student Attendance to update:");
+			percentage = sc.next();
+			while (!percentage.matches(pattern)) {
+				System.err.println("Incorrect StudentName");
+				System.out.println("enter the Student Attendance to update again:");
+				percentage = sc.next();
+			}
+			pj.setAttendance(percentage);
+			String query1 = "update Marks set Attendance_Percentage=? where Student_id=? ";
+			PreparedStatement prepare1 = connection.prepareStatement(query1);	
+			prepare1.setString(1, pj.getAttendance());
+			prepare1.setString(2, pj.getId());
+			int rows = prepare1.executeUpdate();
+			System.out.println("Attendace Updated");
+		} else {
+			System.err.println("StudentName is not available");
+			atteneance();
+
+		}
+
+	}
 }

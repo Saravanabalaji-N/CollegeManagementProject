@@ -26,6 +26,7 @@ public class StudentDetails {
 
 		if (student.equals("new")) {
 			Enquiry.studentSignupDetails();
+			Enquiry.sudentRecordChoose(pj);
 		}
 	}
 }

@@ -127,7 +127,15 @@ public class ManagementSetting {
 	int mark3;
 	int mark4;
 	int mark5;
-	
+	String attendance;
+	public String getAttendance() {
+		return attendance;
+	}
+
+	public void setAttendance(String percentage) {
+		this.attendance = percentage;
+	}
+
 	public int getMark1() {
 		return mark1;
 	}

@@ -33,8 +33,6 @@ public class CollegeManagement {
 		if(press.equals("2")) {
 			cd.studentDetails(pj);
 		}
-		
-		
 	}
 
 }
